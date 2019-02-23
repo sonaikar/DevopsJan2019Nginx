@@ -20,7 +20,13 @@ pipeline{
         
         stage('upload image'){
             steps{
-                 sh 'docker push "docker.artifactory.cetdevops.com/webserver:${BUILD_NUMBER}"'
+                script{
+                    env.ARTIFACTDEPLOY = input message: 'User input required',
+                    ok: 'Deploy!',
+                   parameters: [choice(name: 'Artifact to deploy', choices: "zip\ndockerimage\nrpm", description: 'Which artifact you wont deploy?')]
+                }
+                sh "echo ${ARTIFACTDEPLOY}"
+                sh 'docker push "docker.artifactory.cetdevops.com/webserver:${BUILD_NUMBER}"'
             }
         }
     }
