@@ -13,6 +13,7 @@ pipeline{
         
         stage('build image'){
             steps{
+                sh "echo Branch name is Brijesh"
                 sh 'docker build -t "docker.artifactory.cetdevops.com/webserver:${BUILD_NUMBER}" .'
             }
             
