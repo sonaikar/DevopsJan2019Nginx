@@ -6,8 +6,8 @@ pipeline{
     stages{
         stage('checkout'){
             steps{
-                // git url: 'https://github.com/sonaikar/DevopsJan2019Nginx.git', branch: 'master'
-                checkout scm
+                git url: 'https://github.com/sonaikar/DevopsJan2019Nginx.git', branch: 'master'
+                // heckout scm
             }
         }
         
@@ -31,15 +31,5 @@ pipeline{
         }
 
 
-        stage('upload buildinfo'){
-            steps{
-                rtPublishBuildInfo(
-                    serverId: "artifactory",
-                    // captureEnv: true,
-                    buildName: "${env.JOB_NAME}",
-                    buildNumber: "${env.BUILD_NUMBER}",
-                    )
-            }
-        }
     }
 }
