@@ -20,13 +20,25 @@ pipeline{
         
         stage('upload image'){
             steps{
-                script{
-                    env.ARTIFACTDEPLOY = input message: 'User input required',
-                    ok: 'Deploy!',
-                   parameters: [choice(name: 'Artifact to deploy', choices: "zip\ndockerimage\nrpm", description: 'Which artifact you wont deploy?')]
-                }
-                sh "echo ${ARTIFACTDEPLOY}"
+                // script{
+                //     env.ARTIFACTDEPLOY = input message: 'User input required',
+                //     ok: 'Deploy!',
+                //    parameters: [choice(name: 'Artifact to deploy', choices: "zip\ndockerimage\nrpm", description: 'Which artifact you wont deploy?')]
+                // }
+                // sh "echo ${ARTIFACTDEPLOY}"
                 sh 'docker push "docker.artifactory.cetdevops.com/webserver:${BUILD_NUMBER}"'
+            }
+        }
+
+
+        stage('upload buildinfo'){
+            steps{
+                rtPublishBuildInfo(
+                    serverId: "artifactory",
+                    // captureEnv: true,
+                    buildName: "${env.JOB_NAME}",
+                    buildNumber: "${env.BUILD_NUMBER}",
+                    )
             }
         }
     }
